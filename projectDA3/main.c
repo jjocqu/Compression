@@ -5,13 +5,13 @@
 #include "timer.h"
 
 int main(int argc, char **argv) {
-
+	/*test*/
 	if (argc < 3) {
 		printf("Error 3 arguments necessary: -c/-d inputfile outputfile \n");
 		system("pause"); /*prevents console from closing*/
 		return 1;
 	}
-	
+
 	if (strcmp(argv[1], "-c") == 0) {
 		printf("comprimeer %s tot %s \n", argv[2], argv[3]);
 

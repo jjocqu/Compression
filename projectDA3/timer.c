@@ -14,7 +14,7 @@ void start_timer() {
 void print_time() {
 	int s, ms; /*seconds and milliseconds*/
 	clock_t diff;
-	
+
 	if (timer_started) {
 		diff = clock() - start;
 		ms = diff * 1000 / CLOCKS_PER_SEC;

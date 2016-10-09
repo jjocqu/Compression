@@ -7,7 +7,7 @@ char* read_JSON_from_file(const char* filename) {
 	char temp;
 	int number_of_chars = 0;
 	int i = 0;
-	
+
 	FILE *fp = fopen(filename, "r");
 
 	if (!fp) {
@@ -24,7 +24,7 @@ char* read_JSON_from_file(const char* filename) {
 	}
 
 	/*allocate memory for all the characters*/
-	result = malloc(sizeof(char)*(number_of_chars+1));
+	result = malloc(sizeof(char)*(number_of_chars + 1));
 	rewind(fp); /*resets file pointer to beginning*/
 
 	temp = fgetc(fp);
@@ -53,7 +53,7 @@ int write_to_file(const char* content, const char* filename) {
 	result = fputs(content, fp);
 
 	fclose(fp);
-	
+
 	if (result < 0) {
 		return 1; /*an error occured*/
 	}

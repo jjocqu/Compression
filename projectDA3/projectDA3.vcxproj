@@ -143,19 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\common.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\main.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\timer.c" />
+    <ClCompile Include="common.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="timer.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\Downloads\projectDA3-master\compressed" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\Downloads\projectDA3-master\data.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Downloads\projectDA3-master\common.h" />
-    <ClInclude Include="..\..\..\..\..\Downloads\projectDA3-master\timer.h" />
+    <Text Include="data.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
