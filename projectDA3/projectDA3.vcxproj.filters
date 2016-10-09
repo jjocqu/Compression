@@ -24,9 +24,6 @@
     <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\timer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\..\Downloads\projectDA3-master\compressed">

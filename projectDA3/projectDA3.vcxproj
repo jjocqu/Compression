@@ -146,7 +146,6 @@
     <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\common.c" />
     <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\main.c" />
     <ClCompile Include="..\..\..\..\..\Downloads\projectDA3-master\timer.c" />
-    <ClCompile Include="test.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\..\Downloads\projectDA3-master\compressed" />
