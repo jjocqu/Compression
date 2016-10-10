@@ -22,7 +22,7 @@ char* read_JSON_from_file(const char* filename) {
 	temp = fgetc(fp);
 	number_of_chars++;
 	while (temp != EOF) {
-		if (temp != ',' && temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
+		if (temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
 			valid_chars++;
 		}
 		temp = fgetc(fp);
@@ -32,24 +32,28 @@ char* read_JSON_from_file(const char* filename) {
 
 	/*allocate memory for all the characters*/
 	result = malloc(sizeof(char)*(valid_chars + 1));
+
+	if (!result) {
+		printf("Error while allocating memory");
+	}
+
 	rewind(fp); /*resets file pointer to beginning*/
 
 	temp = fgetc(fp);
 	while (temp != EOF) {
-		if (temp != ',' && temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
+		if (temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
 			result[i] = temp;
 			i++;
 		}
 		temp = fgetc(fp);
 	}
-
+	
 	fclose(fp);
-
 	result[valid_chars] = '\0';
 	return result;
 }
 
-long long get_number_of_chars() {
+long long get_number_of_chars_in_read_file() {
 	return number_of_chars;
 }
 
