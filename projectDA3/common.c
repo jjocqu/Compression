@@ -28,7 +28,6 @@ char* read_JSON_from_file(const char* filename) {
 		temp = fgetc(fp);
 		number_of_chars++;
 	}
-	number_of_chars--; /*????TODO telt EOF mee als char???*/
 
 	/*allocate memory for all the characters*/
 	result = malloc(sizeof(char)*(valid_chars + 1));
