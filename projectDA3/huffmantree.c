@@ -39,23 +39,58 @@ void destroy_binary_heap(binary_heap *heap) {
 	free(heap->nodes);
 }
 
+/*swap function*/
+void swap_nodes(binary_heap *heap, node *first, node *second) {
+	node *temp;
+
+	temp = first;
+	first = second;
+	second = temp;
+}
+
+
 /*heap operations*/
 void add_node(binary_heap *heap, node *n) {
 	int pos = heap->size + 1; /*+1 because pos 0 isn't used!*/
 	int pos_parent = pos / 2;
-	node *temp;
+
+	if (heap->size >= heap->max_size) { /*realloc more memory if necessary*/
+		heap->max_size = heap->max_size * 2;
+		heap->nodes = realloc(heap->nodes, sizeof(node*)*heap->max_size);
+	}
 
 	heap->nodes[pos] = n;
 
 	while (heap->nodes[pos]->frequency < heap->nodes[pos_parent]->frequency) {
-		temp = heap->nodes[pos];
-		heap->nodes[pos] = heap->nodes[pos_parent];
-		heap->nodes[pos_parent] = temp;
+		swap_nodes(heap, heap->nodes[pos], heap->nodes[pos_parent]);
 	}
+
+	heap->size++;
 }
 
+/*remove first node and put last in root and fix heap*/
 node* remove_min(binary_heap *heap) {
+	node *first;
+	int pos = heap->size + 1;
+	int pos_left = pos * 2;
+	int pos_right = pos * 2 + 1;
 
+	swap_nodes(heap, heap->nodes[1], heap->nodes[heap->size + 1]);
+	destroy_node(heap->nodes[heap->size+1]);
+	heap->nodes[heap->size + 1] = NULL;
+
+	while (heap->nodes[pos]->frequency > heap->nodes[pos_left]->frequency ||
+			heap->nodes[pos]->frequency > heap->nodes[pos_right]->frequency) {
+		if (heap->nodes[pos_left]->frequency < heap->nodes[pos_right]->frequency) {
+			swap_nodes(heap, heap->nodes[pos], heap->nodes[pos_left]);
+		}
+		else {
+			swap_nodes(heap, heap->nodes[pos], heap->nodes[pos_right]);
+		}
+	}
+
+	heap->size--;
+	return first;
 }
 
 
