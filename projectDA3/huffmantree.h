@@ -1,25 +1,36 @@
 #ifndef HUFFMANTREE_H
 #define HUFFMANTREE_H
 
+/* if node is internal: 
+*		- character is NULL
+*		- frequency is sum of direct children
+*/
 typedef struct node {
 	char character;
 	node *left;
 	node *right;
-};
+	long long frequency;
+} node;
 
-typedef struct list {
-	int alphabet_size;
-	long long *frequencies;
-	node **root;
-};
+/*an array is used to store the binary heap*/
+typedef struct binary_heap {
+	int size;
+	int max_size;
+	node **nodes;
+} binary_heap;
 
-void create_node(char character);
-void destroy_node();
-void create_list();
-void destroy_list();
+/*create and destroy functions*/
+node* create_node(char character, long long frequency);
+void destroy_node(node *node);
+binary_heap* create_binary_heap(int size);
+void destroy_binary_heap(binary_heap *heap);
 
-/*count the frequencies and initialize list*/
-void build_list(const char* content);
+/*heap operations*/
+void add_node(node *node);
+node* remove_min();
+
+/*count the frequencies and add them to heap*/
+void build_heap(const char* content);
 /*build huffman tree using the list*/
 void build_tree();
 /*TODO functions to read codes from huffman tree*/

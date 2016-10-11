@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common.c" />
+    <ClCompile Include="huffmantree.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="timer.c" />
   </ItemGroup>
