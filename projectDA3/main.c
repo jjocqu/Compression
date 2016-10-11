@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (strcmp(argv[1], "-c") == 0) {
+
 		printf("comprimeer %s tot %s \n", argv[2], argv[3]);
 
 		start_timer();
