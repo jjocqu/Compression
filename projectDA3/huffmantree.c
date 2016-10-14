@@ -108,8 +108,6 @@ void add_node(binary_heap *heap, node *n) {
 		}
 	}
 
-	print_heap(heap);
-
 	heap->size++;
 }
 
@@ -168,7 +166,7 @@ node* remove_min(binary_heap *heap) {
 
 
 void build_heap(const char* content) {
-
+	printf("%s", content);
 }
 
 void build_tree() {

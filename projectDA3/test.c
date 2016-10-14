@@ -86,25 +86,15 @@ void huffmanheap_test() {
 	destroy_binary_heap(heap);
 }
 
+void build_heap_test() {
+
+}
+
 void run_tests() {
 	/*add all tests here*/
 	printf("running tests... \n");
-	//huffmanheap_test();
 
-	binary_heap *heap = create_binary_heap(10);
-	add_node(heap, create_node('5', 5));
-	add_node(heap, create_node('4', 4));
-	add_node(heap, create_node('3', 3));
-	add_node(heap, create_node('2', 2));
-	add_node(heap, create_node('1', 1));
-	assert(heap->size == 5);
-	assert(heap->nodes[1]->frequency == 1);
-	assert(heap->nodes[2]->frequency == 2);
-	assert(heap->nodes[3]->frequency == 4);
-	assert(heap->nodes[4]->frequency == 5);
-	assert(heap->nodes[5]->frequency == 3);
-
-	destroy_binary_heap(heap);
+	huffmanheap_test();
 
 	printf("tests completed \n");
 }
