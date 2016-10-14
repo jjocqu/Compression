@@ -1,14 +1,23 @@
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <stdio.h>
 #include <string.h>
 #include "common.h"
-#include <stdlib.h>
 #include "timer.h"
+#include "test.h"
 
 int main(int argc, char **argv) {
 
+	if (strcmp(argv[1], "-t") == 0) { /*run tests*/
+		run_tests();
+		_CrtDumpMemoryLeaks();
+		return 0;
+	}
+
 	if (argc < 3) {
 		printf("Error 3 arguments necessary: -c/-d inputfile outputfile \n");
-		system("pause"); /*prevents console from closing*/
 		return 1;
 	}
 
@@ -30,6 +39,5 @@ int main(int argc, char **argv) {
 		printf("decodeer %s tot %s \n", argv[2], argv[3]);
 	}
 
-	system("pause"); /*prevents console from closing*/
 	return 0;
 }

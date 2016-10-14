@@ -146,11 +146,13 @@
     <ClCompile Include="common.c" />
     <ClCompile Include="huffmantree.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="test.c" />
     <ClCompile Include="timer.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
     <ClInclude Include="huffmantree.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="timer.h" />
   </ItemGroup>
   <ItemGroup>

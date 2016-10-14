@@ -35,6 +35,7 @@ node* remove_min(binary_heap *heap);
 void build_heap(const char* content);
 /*build huffman tree using the list*/
 void build_tree();
+
 /*TODO functions to read codes from huffman tree*/
 
 
