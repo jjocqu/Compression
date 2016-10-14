@@ -1,9 +1,20 @@
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include "huffmantree.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+
+void print_heap(binary_heap *heap) {
+	int i;
+	printf("printing heap: \n");
+	for (i = 0; i < heap->max_size; i++) {
+		if (heap->nodes[i]) {
+			printf("pos: %d, char %c, freq: %d \n", i, heap->nodes[i]->character, heap->nodes[i]->frequency);
+		}
+		else {
+			printf("pos: %d, NULL \n", i);
+		}
+	}
+}
 
 /*create and destroy functions*/
 node* create_node(char character, long long frequency) {
@@ -31,8 +42,7 @@ void destroy_node(node *n) {
 
 binary_heap* create_binary_heap(int size) {
 	int i;
-	binary_heap *heap = (binary_heap*) malloc(sizeof(heap));
-	free(heap);
+	binary_heap *heap = (binary_heap*) malloc(sizeof(binary_heap));
 	heap->max_size = size;
 	heap->size = 0;
 	heap->nodes = (node**) malloc(sizeof(node*)*heap->max_size);
@@ -57,18 +67,17 @@ void destroy_binary_heap(binary_heap *bheap) {
 			bheap->nodes = NULL;
 		}
 		free(bheap);
-		_CrtDumpMemoryLeaks();
 		bheap = NULL;
 	}
 }
 
 /*swap function*/
-void swap_nodes(binary_heap *heap, node *first, node *second) {
+void swap_nodes(binary_heap *heap, int pos_first, int pos_second) {
 	node *temp;
 
-	temp = first;
-	first = second;
-	second = temp;
+	temp = heap->nodes[pos_first];
+	heap->nodes[pos_first] = heap->nodes[pos_second];
+	heap->nodes[pos_second] = temp;
 }
 
 
@@ -89,9 +98,17 @@ void add_node(binary_heap *heap, node *n) {
 		heap->nodes[pos] = n;
 
 		while (heap->nodes[pos]->frequency < heap->nodes[pos_parent]->frequency) {
-			swap_nodes(heap, heap->nodes[pos], heap->nodes[pos_parent]);
+			swap_nodes(heap, pos, pos_parent);
+			pos = pos_parent;
+			pos_parent = pos / 2;
+
+			if (pos == 1) {
+				break;
+			}
 		}
 	}
+
+	print_heap(heap);
 
 	heap->size++;
 }
@@ -99,21 +116,49 @@ void add_node(binary_heap *heap, node *n) {
 /*remove first node and put last in root and fix heap*/
 node* remove_min(binary_heap *heap) {
 	node *first;
-	int pos = heap->size + 1;
+	int pos = 1; /*pos of smallest node*/
 	int pos_left = pos * 2;
 	int pos_right = pos * 2 + 1;
+	int min_pos;
+	int balanced = 0; /*boolean variable*/
 
-	swap_nodes(heap, heap->nodes[1], heap->nodes[heap->size + 1]);
-	destroy_node(heap->nodes[heap->size+1]);
-	heap->nodes[heap->size + 1] = NULL;
+	/*heap is only 1 node*/
+	if (heap->size == 1) {
+		first = heap->nodes[1];
+		heap->nodes[1] = NULL;
+	}
+	else {
+		swap_nodes(heap, 1, heap->size);
+		first = heap->nodes[heap->size];
+		heap->nodes[heap->size] = NULL;
 
-	while (heap->nodes[pos]->frequency > heap->nodes[pos_left]->frequency ||
-			heap->nodes[pos]->frequency > heap->nodes[pos_right]->frequency) {
-		if (heap->nodes[pos_left]->frequency < heap->nodes[pos_right]->frequency) {
-			swap_nodes(heap, heap->nodes[pos], heap->nodes[pos_left]);
-		}
-		else {
-			swap_nodes(heap, heap->nodes[pos], heap->nodes[pos_right]);
+		//print_heap(heap);
+
+		while (!balanced) {
+			/*check if balancing is necassary*/
+			if (!heap->nodes[pos_left]) { /*if there is no left child then there will be no right child*/
+				break;
+			}
+			else if (!heap->nodes[pos_right]) { /*only a left child*/
+				if (heap->nodes[pos_left]->frequency < heap->nodes[pos]->frequency) {
+					swap_nodes(heap, pos_left, pos);
+				}
+			}
+			else { /*a left and a right child*/
+				if (heap->nodes[pos_left]->frequency <= heap->nodes[pos_right]->frequency) {
+					min_pos = pos_left;
+				}
+				else {
+					min_pos = pos_right;
+				}
+				if (heap->nodes[min_pos]->frequency < heap->nodes[pos]->frequency) {
+					swap_nodes(heap, min_pos, pos);
+				}
+			}
+			/*go one 'level' higher in tree*/
+			pos = pos / 2;
+			pos_left = pos * 2;
+			pos_right = pos * 2 + 1;
 		}
 	}
 
