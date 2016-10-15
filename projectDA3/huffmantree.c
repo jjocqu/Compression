@@ -8,7 +8,7 @@ void print_heap(binary_heap *heap) {
 	printf("printing heap: \n");
 	for (i = 0; i < heap->max_size; i++) {
 		if (heap->nodes[i]) {
-			printf("pos: %d, char %c, freq: %d \n", i, heap->nodes[i]->character, heap->nodes[i]->frequency);
+			printf("pos: %d, char %c, freq: %lld \n", i, heap->nodes[i]->character, heap->nodes[i]->frequency);
 		}
 		else {
 			printf("pos: %d, NULL \n", i);
@@ -85,14 +85,20 @@ void swap_nodes(binary_heap *heap, int pos_first, int pos_second) {
 void add_node(binary_heap *heap, node *n) {
 	int pos = heap->size + 1; /*+1 because pos 0 isn't used!*/
 	int pos_parent = pos / 2;
+
+	int i;
 	
 	if (pos == 1) { /*first node added*/
 		heap->nodes[pos] = n;
 	}
 	else {
-		if (heap->size > heap->max_size) { /*realloc more memory if necessary*/
+		if (heap->size+1 >= heap->max_size) { /*realloc more memory if necessary*/
 			heap->max_size = heap->max_size * 2;
-			heap->nodes = realloc(heap->nodes, sizeof(node*)*heap->max_size);
+			heap->nodes = (node**) realloc(heap->nodes, sizeof(node*)*heap->max_size);
+
+			for (i = heap->size+1; i < heap->max_size; i++) {
+				heap->nodes[i] = NULL;
+			}
 		}
 
 		heap->nodes[pos] = n;
@@ -164,11 +170,67 @@ node* remove_min(binary_heap *heap) {
 	return first;
 }
 
+/*help function
+* returns -1 if characters doesn't contains character
+* returns the index if it does
+*/
+int contains_char(char *characters, char character) {
+	int i = 0;
 
-void build_heap(const char* content) {
-	printf("%s", content);
+	while (characters[i] != '\0') {
+		if (characters[i] == character) {
+			return i;
+		}
+		i++;
+	}
+	return -1;
 }
 
-void build_tree() {
+binary_heap* build_heap(const char* content) {
+	binary_heap *heap;
+
+	int i = 0;
+	int index = 0;
+	int size = 10;
+	char *characters = (char*) malloc(sizeof(char) * size);
+	long long *frequencies = (long long*) malloc(sizeof(long long) * size);
+
+	while (content[i] != '\0') {
+		if (content[i] != ',') {
+			int j = contains_char(characters, content[i]);
+			if (j == -1) {
+				if (index >= size) { /*realloc more memory if necessary*/
+					size = 2 * size;
+					characters = (char*) realloc(characters, sizeof(char) * size);
+					frequencies = (long long*) realloc(frequencies, sizeof(long long) * size);
+				}
+				characters[index] = content[i];
+				frequencies[index] = 1;
+				index++;
+
+			}
+			else { /*characters[j] == content[i]*/
+				frequencies[j]++;
+			}
+		}
+		i++;
+	}
+
+	/*frequencies are counted, now build heap*/
+	heap = create_binary_heap(size);
+
+	for (i = 0; i < size; i++) {
+		if (characters[i] && frequencies[i]) {
+			add_node(heap, create_node(characters[i], frequencies[i]));
+		}
+	}
+
+	free(characters);
+	free(frequencies);
+
+	return heap;
+}
+
+void build_tree(binary_heap *heap) {
 
 }

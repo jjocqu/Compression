@@ -1,3 +1,7 @@
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -87,7 +91,37 @@ void huffmanheap_test() {
 }
 
 void build_heap_test() {
+	char *string;
+	binary_heap* heap;
 
+	string = read_JSON_from_file("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
+	heap = build_heap(string);
+	assert(heap->size == 10);
+	assert(heap->nodes[1]->frequency == 1);
+	assert(heap->nodes[2]->frequency == 1);
+	assert(heap->nodes[3]->frequency == 1);
+	assert(heap->nodes[4]->frequency == 1);
+	assert(heap->nodes[5]->frequency == 1);
+	assert(heap->nodes[6]->frequency == 1);
+	assert(heap->nodes[7]->frequency == 1); 
+	assert(heap->nodes[8]->frequency == 2); /*char 0 with freq 2*/ 
+	assert(heap->nodes[9]->frequency == 1);
+	assert(heap->nodes[10]->frequency == 1);
+
+	destroy_binary_heap(heap);
+	free(string);
+}
+
+void build_tree_test() {
+	char *string;
+	binary_heap* heap;
+
+	string = read_JSON_from_file("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
+	heap = build_heap(string);
+	build_tree(heap);
+
+	destroy_binary_heap(heap);
+	free(string);
 }
 
 void run_tests() {
@@ -95,6 +129,8 @@ void run_tests() {
 	printf("running tests... \n");
 
 	huffmanheap_test();
+	build_heap_test();
+	build_tree_test();
 
 	printf("tests completed \n");
 }

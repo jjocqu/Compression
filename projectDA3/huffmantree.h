@@ -32,9 +32,9 @@ void add_node(binary_heap *heap, node *n);
 node* remove_min(binary_heap *heap);
 
 /*count the frequencies and add them to heap*/
-void build_heap(const char* content);
-/*build huffman tree using the list*/
-void build_tree();
+binary_heap* build_heap(const char* content);
+/*build huffman tree using the heap*/
+void build_tree(binary_heap *heap);
 
 /*TODO functions to read codes from huffman tree*/
 
