@@ -97,6 +97,7 @@ void build_heap_test() {
 	string = read_JSON_from_file("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
 	heap = build_heap(string);
 	assert(heap->size == 10);
+	printf("char: %c, freq: %lld \n", heap->nodes[1]->character, heap->nodes[1]->frequency);
 	assert(heap->nodes[1]->frequency == 1);
 	assert(heap->nodes[2]->frequency == 1);
 	assert(heap->nodes[3]->frequency == 1);
@@ -115,10 +116,21 @@ void build_heap_test() {
 void build_tree_test() {
 	char *string;
 	binary_heap* heap;
+	node *n;
 
 	string = read_JSON_from_file("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
 	heap = build_heap(string);
-	build_tree(heap);
+	n = build_tree(heap);
+	assert(n->left->left->character == '0');
+	assert(n->left->right->left->character == '8');
+	assert(n->left->right->right->character == '3');
+	assert(n->right->left->left->character == '5');
+	assert(n->right->left->right->left->character == '6');
+	assert(n->right->left->right->right->character == '2');
+	assert(n->right->right->left->left->character == '1');
+	assert(n->right->right->left->right->character == '9');
+	assert(n->right->right->right->left->character == '7');
+	assert(n->right->right->right->right->character == '4');
 
 	destroy_binary_heap(heap);
 	free(string);

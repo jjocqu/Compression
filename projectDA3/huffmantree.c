@@ -19,6 +19,9 @@ void print_heap(binary_heap *heap) {
 /*create and destroy functions*/
 node* create_node(char character, long long frequency) {
 	node *n = (node*) malloc(sizeof(node));
+	if (!n) {
+		printf("error: mem alloc failed");
+	}
 	n->character = character;
 	n->frequency = frequency;
 	n->left = NULL;
@@ -43,9 +46,15 @@ void destroy_node(node *n) {
 binary_heap* create_binary_heap(int size) {
 	int i;
 	binary_heap *heap = (binary_heap*) malloc(sizeof(binary_heap));
+	if (!heap) {
+		printf("error: mem alloc failed");
+	}
 	heap->max_size = size;
 	heap->size = 0;
 	heap->nodes = (node**) malloc(sizeof(node*)*heap->max_size);
+	if (!heap->nodes) {
+		printf("error: mem alloc failed");
+	}
 
 	for (i = 0; i < heap->max_size; i++) {
 		heap->nodes[i] = NULL;
@@ -95,6 +104,9 @@ void add_node(binary_heap *heap, node *n) {
 		if (heap->size+1 >= heap->max_size) { /*realloc more memory if necessary*/
 			heap->max_size = heap->max_size * 2;
 			heap->nodes = (node**) realloc(heap->nodes, sizeof(node*)*heap->max_size);
+			if (!heap->nodes) {
+				printf("error: mem alloc failed");
+			}
 
 			for (i = heap->size+1; i < heap->max_size; i++) {
 				heap->nodes[i] = NULL;
@@ -146,6 +158,12 @@ node* remove_min(binary_heap *heap) {
 			else if (!heap->nodes[pos_right]) { /*only a left child*/
 				if (heap->nodes[pos_left]->frequency < heap->nodes[pos]->frequency) {
 					swap_nodes(heap, pos_left, pos);
+					pos = pos_left;
+					pos_left = pos * 2;
+					pos_right = pos * 2 + 1;
+				}
+				else {
+					break;
 				}
 			}
 			else { /*a left and a right child*/
@@ -157,12 +175,14 @@ node* remove_min(binary_heap *heap) {
 				}
 				if (heap->nodes[min_pos]->frequency < heap->nodes[pos]->frequency) {
 					swap_nodes(heap, min_pos, pos);
+					pos = min_pos; 
+					pos_left = pos * 2;
+					pos_right = pos * 2 + 1;
+				}
+				else {
+					break;
 				}
 			}
-			/*go one 'level' higher in tree*/
-			pos = pos / 2;
-			pos_left = pos * 2;
-			pos_right = pos * 2 + 1;
 		}
 	}
 
@@ -195,6 +215,10 @@ binary_heap* build_heap(const char* content) {
 	char *characters = (char*) malloc(sizeof(char) * size);
 	long long *frequencies = (long long*) malloc(sizeof(long long) * size);
 
+	if (!characters || !frequencies) {
+		printf("error: mem alloc failed");
+	}
+
 	while (content[i] != '\0') {
 		if (content[i] != ',') {
 			int j = contains_char(characters, content[i]);
@@ -203,6 +227,9 @@ binary_heap* build_heap(const char* content) {
 					size = 2 * size;
 					characters = (char*) realloc(characters, sizeof(char) * size);
 					frequencies = (long long*) realloc(frequencies, sizeof(long long) * size);
+					if (!characters || !frequencies) {
+						printf("error: mem alloc failed");
+					}
 				}
 				characters[index] = content[i];
 				frequencies[index] = 1;
@@ -231,6 +258,19 @@ binary_heap* build_heap(const char* content) {
 	return heap;
 }
 
-void build_tree(binary_heap *heap) {
+node* build_tree(binary_heap *heap) {
+	node *n1;
+	node *n2;
+	node *parent;
 
+	while (heap->size != 1) { /*continue untill there is one node in heap*/
+		n1 = remove_min(heap);
+		n2 = remove_min(heap);
+		parent = create_node(NULL, n1->frequency + n2->frequency);
+		parent->left = n1;
+		parent->right = n2;
+		add_node(heap, parent);	
+	}
+
+	return parent;
 }

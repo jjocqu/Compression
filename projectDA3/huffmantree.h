@@ -5,7 +5,7 @@
 *		- character is NULL
 *		- frequency is sum of direct children
 */
-typedef struct {
+typedef struct node {
 	char character;
 	struct node *left;
 	struct node *right;
@@ -15,7 +15,7 @@ typedef struct {
 /*an array is used to store the binary heap
 * no element at position 0
 */
-typedef struct {
+typedef struct binary_heap {
 	int size;
 	int max_size;
 	node **nodes;
@@ -34,7 +34,7 @@ node* remove_min(binary_heap *heap);
 /*count the frequencies and add them to heap*/
 binary_heap* build_heap(const char* content);
 /*build huffman tree using the heap*/
-void build_tree(binary_heap *heap);
+node* build_tree(binary_heap *heap);
 
 /*TODO functions to read codes from huffman tree*/
 
