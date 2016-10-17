@@ -35,8 +35,8 @@ node* remove_min(binary_heap *heap);
 binary_heap* build_heap(const char* content);
 /*build huffman tree using the heap*/
 node* build_tree(binary_heap *heap);
-
-/*TODO functions to read codes from huffman tree*/
+/*returns code for a given char using DFS*/
+char* get_code(node *node, char character);
 
 
 #endif

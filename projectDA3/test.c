@@ -97,7 +97,6 @@ void build_heap_test() {
 	string = read_JSON_from_file("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
 	heap = build_heap(string);
 	assert(heap->size == 10);
-	printf("char: %c, freq: %lld \n", heap->nodes[1]->character, heap->nodes[1]->frequency);
 	assert(heap->nodes[1]->frequency == 1);
 	assert(heap->nodes[2]->frequency == 1);
 	assert(heap->nodes[3]->frequency == 1);

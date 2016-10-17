@@ -274,3 +274,10 @@ node* build_tree(binary_heap *heap) {
 
 	return parent;
 }
+
+char* get_code(node *node, char character) {
+	int size = 1;
+	char *bits = (char*) malloc(sizeof(char) * size);
+
+	//TODO
+}
