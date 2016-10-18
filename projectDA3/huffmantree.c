@@ -222,25 +222,23 @@ binary_heap* build_heap(const char* content) {
 	}
 
 	while (content[i] != '\0') {
-		if (content[i] != ',') {
-			int j = contains_char(characters, content[i]);
-			if (j == -1) {
-				if (index >= size) { /*realloc more memory if necessary*/
-					size = 2 * size;
-					characters = (char*) realloc(characters, sizeof(char) * size);
-					frequencies = (long long*) realloc(frequencies, sizeof(long long) * size);
-					if (!characters || !frequencies) {
-						printf("error: mem alloc failed");
-					}
+		int j = contains_char(characters, content[i]);
+		if (j == -1) {
+			if (index >= size) { /*realloc more memory if necessary*/
+				size = 2 * size;
+				characters = (char*) realloc(characters, sizeof(char) * size);
+				frequencies = (long long*) realloc(frequencies, sizeof(long long) * size);
+				if (!characters || !frequencies) {
+					printf("error: mem alloc failed");
 				}
-				characters[index] = content[i];
-				frequencies[index] = 1;
-				index++;
+			}
+			characters[index] = content[i];
+			frequencies[index] = 1;
+			index++;
 
-			}
-			else { /*characters[j] == content[i]*/
-				frequencies[j]++;
-			}
+		}
+		else { /*characters[j] == content[i]*/
+			frequencies[j]++;
 		}
 		i++;
 	}
@@ -283,7 +281,7 @@ void build_char_code(node *node) {
 		strcat(node->left->code, "0");
 		build_char_code(node->left);
 	}
-	if (node->character) { /*external node*/
+	if (node->character >= 0) { /*external node*/
 		strcat(node->code, "\0");
 		strcpy(char_code[node->character], node->code);
 		printf("");

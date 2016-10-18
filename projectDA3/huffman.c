@@ -1,6 +1,7 @@
 #include "huffman.h"
 #include "huffmantree.h"
 
+#include <stdlib.h>
 #include <stdio.h>
 
 void encode(char *input) {

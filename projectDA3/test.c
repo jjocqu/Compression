@@ -169,10 +169,10 @@ void run_tests() {
 	/*add all tests here*/
 	printf("running tests... \n");
 
-	huffmanheap_test();
-	build_heap_test();
-	build_tree_test();
-	char_code_test();
+	//huffmanheap_test();
+	//build_heap_test();
+	//build_tree_test();
+	//char_code_test();
 	
 	encode_test();
 
