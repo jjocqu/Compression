@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void print_heap(binary_heap *heap) {
 	int i;
@@ -26,6 +27,7 @@ node* create_node(char character, long long frequency) {
 	n->frequency = frequency;
 	n->left = NULL;
 	n->right = NULL;
+	strcpy(n->code, "");
 	
 	return n;
 }
@@ -275,9 +277,24 @@ node* build_tree(binary_heap *heap) {
 	return parent;
 }
 
-char* get_code(node *node, char character) {
-	int size = 1;
-	char *bits = (char*) malloc(sizeof(char) * size);
+void build_char_code(node *node) {
+	if (node->left) {
+		strcat(node->left->code, node->code);
+		strcat(node->left->code, "0");
+		build_char_code(node->left);
+	}
+	if (node->character) { /*external node*/
+		strcat(node->code, "\0");
+		strcpy(char_code[node->character], node->code);
+		printf("");
+	}
+	if (node->right) {
+		strcat(node->right->code, node->code);
+		strcat(node->right->code, "1");
+		build_char_code(node->right);
+	}
+}
 
-	//TODO
+char* get_code(char character) {
+	return char_code[character];
 }

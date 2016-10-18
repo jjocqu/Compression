@@ -7,6 +7,7 @@
 #include <assert.h>
 
 #include "huffmantree.h"
+#include "huffman.h"
 
 
 void huffmanheap_test() {
@@ -135,6 +136,35 @@ void build_tree_test() {
 	free(string);
 }
 
+void char_code_test() {
+	char *string;
+	binary_heap* heap;
+	node *n;
+
+	string = read_JSON_from_file("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
+	heap = build_heap(string);
+	n = build_tree(heap);
+	build_char_code(n);
+	assert(strcmp(get_code('0'), "00") == 0);
+	assert(strcmp(get_code('1'), "1100") == 0);
+	assert(strcmp(get_code('2'), "1011") == 0);
+	assert(strcmp(get_code('3'), "011") == 0);
+	assert(strcmp(get_code('4'), "1111") == 0);
+	assert(strcmp(get_code('5'), "100") == 0);
+	assert(strcmp(get_code('6'), "1010") == 0);
+	assert(strcmp(get_code('7'), "1110") == 0);
+	assert(strcmp(get_code('8'), "010") == 0);
+	assert(strcmp(get_code('9'), "1101") == 0);
+
+
+	destroy_binary_heap(heap);
+	free(string);
+}
+
+void encode_test() {
+	encode("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
+}
+
 void run_tests() {
 	/*add all tests here*/
 	printf("running tests... \n");
@@ -142,6 +172,9 @@ void run_tests() {
 	huffmanheap_test();
 	build_heap_test();
 	build_tree_test();
+	char_code_test();
+	
+	encode_test();
 
 	printf("tests completed \n");
 }

@@ -10,6 +10,7 @@ typedef struct node {
 	struct node *left;
 	struct node *right;
 	long long frequency;
+	char code[256];
 } node;
 
 /*an array is used to store the binary heap
@@ -20,6 +21,9 @@ typedef struct binary_heap {
 	int max_size;
 	node **nodes;
 } binary_heap;
+
+/*saves for each char corresponding code*/
+char char_code[256][256];
 
 /*create and destroy functions*/
 node* create_node(char character, long long frequency);
@@ -35,8 +39,10 @@ node* remove_min(binary_heap *heap);
 binary_heap* build_heap(const char* content);
 /*build huffman tree using the heap*/
 node* build_tree(binary_heap *heap);
-/*returns code for a given char using DFS*/
-char* get_code(node *node, char character);
+/*build the char_code*/
+void build_char_code(node *node);
+/*gets codes in list of char_code*/
+char* get_code(char character);
 
 
 #endif
