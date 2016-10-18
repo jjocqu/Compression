@@ -1,10 +1,11 @@
 #include "huffman.h"
 #include "huffmantree.h"
+#include "common.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 
-void encode(char *input) {
+void encode(char *input, char *output) {
 	int i = 0;
 
 	char *string;

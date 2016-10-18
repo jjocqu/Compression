@@ -162,7 +162,7 @@ void char_code_test() {
 }
 
 void encode_test() {
-	encode("data.txt"); /*contains 0 12 34 567 890 (in JSON)*/
+	encode("data.txt", "compressed"); /*contains 0 12 34 567 890 (in JSON)*/
 }
 
 void run_tests() {

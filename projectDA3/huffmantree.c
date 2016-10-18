@@ -247,7 +247,7 @@ binary_heap* build_heap(const char* content) {
 	heap = create_binary_heap(size);
 
 	for (i = 0; i < size; i++) {
-		if (characters[i] && frequencies[i]) {
+		if (characters[i] > 0 && frequencies[i] > 0) {
 			add_node(heap, create_node(characters[i], frequencies[i]));
 		}
 	}
@@ -281,10 +281,9 @@ void build_char_code(node *node) {
 		strcat(node->left->code, "0");
 		build_char_code(node->left);
 	}
-	if (node->character >= 0) { /*external node*/
+	if (node->character > 0) { /*external node*/
 		strcat(node->code, "\0");
 		strcpy(char_code[node->character], node->code);
-		printf("");
 	}
 	if (node->right) {
 		strcat(node->right->code, node->code);
