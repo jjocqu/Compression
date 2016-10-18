@@ -168,7 +168,7 @@ node* remove_min(binary_heap *heap) {
 					break;
 				}
 			}
-			else { /*a left and a right child*/
+			else if (heap->nodes[pos_left] && heap->nodes[pos_right]) { /*a left and a right child*/
 				if (heap->nodes[pos_left]->frequency <= heap->nodes[pos_right]->frequency) {
 					min_pos = pos_left;
 				}
