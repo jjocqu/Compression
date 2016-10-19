@@ -62,6 +62,14 @@ binary_heap* create_binary_heap(int size) {
 		heap->nodes[i] = NULL;
 	}
 
+	heap->char_freq_size = size;
+	heap->characters = (char*) malloc(sizeof(char) * heap->max_size);
+	heap->frequencies = (long long*) malloc(sizeof(long long) * heap->max_size);
+
+	if (!heap->characters || !heap->frequencies) {
+		printf("error: mem alloc failed");
+	}
+
 	return heap;
 }
 
@@ -76,6 +84,12 @@ void destroy_binary_heap(binary_heap *bheap) {
 
 			free(bheap->nodes);
 			bheap->nodes = NULL;
+		}
+		if (bheap->characters) {
+			free(bheap->characters);
+		}
+		if (bheap->frequencies) {
+			free(bheap->frequencies);
 		}
 		free(bheap);
 		bheap = NULL;
@@ -211,51 +225,44 @@ int contains_char(char *characters, char character) {
 binary_heap* build_heap(const char* content) {
 	binary_heap *heap;
 
+	heap = create_binary_heap(10);
+
+	add_to_heap(heap, content);
+
+	return heap;
+}
+
+void add_to_heap(binary_heap *heap, const char* content) {
 	int i = 0;
 	int index = 0;
-	int size = 10;
-	char *characters = (char*) malloc(sizeof(char) * size);
-	long long *frequencies = (long long*) malloc(sizeof(long long) * size);
-
-	if (!characters || !frequencies) {
-		printf("error: mem alloc failed");
-	}
 
 	while (content[i] != '\0') {
-		int j = contains_char(characters, content[i]);
+		int j = contains_char(heap->characters, content[i]);
 		if (j == -1) {
-			if (index >= size) { /*realloc more memory if necessary*/
-				size = 2 * size;
-				characters = (char*) realloc(characters, sizeof(char) * size);
-				frequencies = (long long*) realloc(frequencies, sizeof(long long) * size);
-				if (!characters || !frequencies) {
+			if (index >= heap->char_freq_size) { /*realloc more memory if necessary*/
+				heap->char_freq_size = 2 * heap->char_freq_size;
+				heap->characters = (char*)realloc(heap->characters, sizeof(char) * heap->char_freq_size);
+				heap->frequencies = (long long*)realloc(heap->frequencies, sizeof(long long) * heap->char_freq_size);
+				if (!heap->characters || !heap->frequencies) {
 					printf("error: mem alloc failed");
 				}
 			}
-			characters[index] = content[i];
-			frequencies[index] = 1;
+			heap->characters[index] = content[i];
+			heap->frequencies[index] = 1;
 			index++;
 
 		}
 		else { /*characters[j] == content[i]*/
-			frequencies[j]++;
+			heap->frequencies[j]++;
 		}
 		i++;
 	}
 
-	/*frequencies are counted, now build heap*/
-	heap = create_binary_heap(size);
-
-	for (i = 0; i < size; i++) {
-		if (characters[i] > 0 && frequencies[i] > 0) {
-			add_node(heap, create_node(characters[i], frequencies[i]));
+	for (i = 0; i < heap->max_size; i++) {
+		if (heap->characters[i] > 0 && heap->frequencies[i] > 0) {
+			add_node(heap, create_node(heap->characters[i], heap->frequencies[i]));
 		}
 	}
-
-	free(characters);
-	free(frequencies);
-
-	return heap;
 }
 
 node* build_tree(binary_heap *heap) {

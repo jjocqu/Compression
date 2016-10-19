@@ -20,6 +20,10 @@ typedef struct binary_heap {
 	int size;
 	int max_size;
 	node **nodes;
+
+	char *characters;
+	long long *frequencies;
+	int char_freq_size;
 } binary_heap;
 
 /*saves for each char corresponding code*/
@@ -37,6 +41,8 @@ node* remove_min(binary_heap *heap);
 
 /*count the frequencies and add them to heap*/
 binary_heap* build_heap(const char* content);
+/*function to add new content to heap after creation*/
+void add_to_heap(binary_heap *heap, const char* content);
 /*build huffman tree using the heap*/
 node* build_tree(binary_heap *heap);
 /*build the char_code*/
