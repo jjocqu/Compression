@@ -28,12 +28,11 @@ int main(int argc, char **argv) {
 		start_timer();
 
 		/*read and write test*/
-		char *string = read_JSON_from_file(argv[2]);
+		char *string = read_JSON_from_file(argv[2], 0, 1000);
 		write_to_file(string, argv[3]);
 
 		printf("reading and writing to file time: \n");
 		print_time();
-		printf("number of chars: %lld \n", get_number_of_chars_in_read_file());
 
 	}
 	else if (strcmp(argv[1], "-d") == 0) {

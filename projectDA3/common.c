@@ -2,35 +2,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-long long number_of_chars;
-
-char* read_JSON_from_file(const char* filename) {
+char* read_JSON_from_file(const char* filename, long from, long number_of_bytes) {
 	char* result;
 	char temp;
 	int valid_chars = 0;
 	int i = 0;
 	
-	number_of_chars = 0;
-
 	FILE *fp = fopen(filename, "r");
 
 	if (!fp) {
 		printf("Error opening file: %s", filename);
 	}
 
+	/*start reading from position*/
+	fseek(fp, from, SEEK_SET);
+
 	/*count the number of character in the json file*/
 	temp = fgetc(fp);
-	number_of_chars++;
-	while (temp != EOF) {
+	while (temp != EOF && valid_chars < number_of_bytes) {
 		if (temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
 			valid_chars++;
 		}
 		temp = fgetc(fp);
-		number_of_chars++;
 	}
 
 	/*allocate memory for all the characters*/
-	result = malloc(sizeof(char)*(valid_chars + 1));
+	result = (char*) malloc(sizeof(char)*(valid_chars + 1));
 
 	if (!result) {
 		printf("Error while allocating memory");
@@ -39,7 +36,7 @@ char* read_JSON_from_file(const char* filename) {
 	rewind(fp); /*resets file pointer to beginning*/
 
 	temp = fgetc(fp);
-	while (temp != EOF) {
+	while (temp != EOF && i < number_of_bytes) {
 		if (temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
 			result[i] = temp;
 			i++;
@@ -50,10 +47,6 @@ char* read_JSON_from_file(const char* filename) {
 	fclose(fp);
 	result[valid_chars] = '\0';
 	return result;
-}
-
-long long get_number_of_chars_in_read_file() {
-	return number_of_chars;
 }
 
 int write_to_file(const char* content, const char* filename) {

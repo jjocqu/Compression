@@ -1,12 +1,10 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-/*returns input sequence with whitespace as delimeter*/
-char* read_JSON_from_file(const char* filename);
-/*returns total number of chars of the last read file
-* do not use before read_JSON_from_file
+/*returns input sequence with ',' as delimeter
+* don't read all the bytes at once, read from 'from' to 'to'
 */
-long long get_number_of_chars_in_read_file();
+char* read_JSON_from_file(const char* filename, long from, long number_of_bytes);
 /*returns 0 if succeeded, 1 otherwise*/
 int write_to_file(const char* content, const char* filename);
 

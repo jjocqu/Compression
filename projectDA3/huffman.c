@@ -12,7 +12,7 @@ void encode(char *input, char *output) {
 	binary_heap* heap;
 	node *n;
 
-	string = read_JSON_from_file(input);
+	string = read_JSON_from_file(input, 0, 1000);
 	heap = build_heap(string);
 	n = build_tree(heap);
 	build_char_code(n);
