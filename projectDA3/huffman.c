@@ -13,7 +13,9 @@ void encode(char *input, char *output) {
 	node *n;
 
 	string = read_JSON_from_file(input, 0, 1000);
-	heap = build_heap(string);
+	heap = create_binary_heap(10);
+	count_frequencies(heap, string);
+	add_to_heap(heap);
 	n = build_tree(heap);
 	build_char_code(n);
 

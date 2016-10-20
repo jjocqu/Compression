@@ -97,8 +97,12 @@ void build_heap_test() {
 	char *string;
 	binary_heap* heap;
 
-	string = read_JSON_from_file("data.txt", 0, 1000); /*contains 0,12,34,567,890 */
-	heap = build_heap(string);
+	string = read_JSON_from_file("data.txt", 0, 5); /*0,12,*/
+	char *string2 = read_JSON_from_file("data.txt", 6, 1000);/*34,567,890*/
+	heap = create_binary_heap(10);
+	count_frequencies(heap, string); 
+	count_frequencies(heap, string2);
+	add_to_heap(heap);
 	assert(heap->size == 11);
 	assert(heap->nodes[1]->frequency == 1);
 	assert(heap->nodes[2]->frequency == 1);
@@ -114,6 +118,7 @@ void build_heap_test() {
 
 	destroy_binary_heap(heap);
 	free(string);
+	free(string2);
 }
 
 void build_tree_test() {
@@ -122,7 +127,9 @@ void build_tree_test() {
 	node *n;
 
 	string = read_JSON_from_file("data.txt", 0, 1000); /*contains 0,12,34,567,890 */
-	heap = build_heap(string);
+	heap = create_binary_heap(10);
+	count_frequencies(heap, string);
+	add_to_heap(heap);
 	n = build_tree(heap);
 	assert(n->left->left->left->character == '5');
 	assert(n->left->left->right->left->character == '3');
@@ -146,7 +153,9 @@ void char_code_test() {
 	node *n;
 
 	string = read_JSON_from_file("data.txt", 0, 1000); /*contains 0,12,34,567,890*/
-	heap = build_heap(string);
+	heap = create_binary_heap(10);
+	count_frequencies(heap, string);
+	add_to_heap(heap);	
 	n = build_tree(heap);
 	build_char_code(n);
 	assert(strcmp(get_code('0'), "011") == 0);

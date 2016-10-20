@@ -65,6 +65,7 @@ binary_heap* create_binary_heap(int size) {
 	heap->char_freq_size = size;
 	heap->characters = (char*) malloc(sizeof(char) * heap->max_size);
 	heap->frequencies = (long long*) malloc(sizeof(long long) * heap->max_size);
+	heap->index = 0;
 
 	if (!heap->characters || !heap->frequencies) {
 		printf("error: mem alloc failed");
@@ -210,36 +211,25 @@ node* remove_min(binary_heap *heap) {
 * returns -1 if characters doesn't contains character
 * returns the index if it does
 */
-int contains_char(char *characters, char character) {
+int contains_char(char *characters, char character, int max) {
 	int i = 0;
 
-	while (characters[i] != '\0') {
+	for (i = 0; i <= max; i++) {
 		if (characters[i] == character) {
 			return i;
 		}
-		i++;
 	}
+
 	return -1;
 }
 
-binary_heap* build_heap(const char* content) {
-	binary_heap *heap;
-
-	heap = create_binary_heap(10);
-
-	add_to_heap(heap, content);
-
-	return heap;
-}
-
-void add_to_heap(binary_heap *heap, const char* content) {
+void count_frequencies(binary_heap *heap, char *content) {
 	int i = 0;
-	int index = 0;
 
 	while (content[i] != '\0') {
-		int j = contains_char(heap->characters, content[i]);
+		int j = contains_char(heap->characters, content[i], heap->index);
 		if (j == -1) {
-			if (index >= heap->char_freq_size) { /*realloc more memory if necessary*/
+			if (heap->index >= heap->char_freq_size) { /*realloc more memory if necessary*/
 				heap->char_freq_size = 2 * heap->char_freq_size;
 				heap->characters = (char*)realloc(heap->characters, sizeof(char) * heap->char_freq_size);
 				heap->frequencies = (long long*)realloc(heap->frequencies, sizeof(long long) * heap->char_freq_size);
@@ -247,9 +237,9 @@ void add_to_heap(binary_heap *heap, const char* content) {
 					printf("error: mem alloc failed");
 				}
 			}
-			heap->characters[index] = content[i];
-			heap->frequencies[index] = 1;
-			index++;
+			heap->characters[heap->index] = content[i];
+			heap->frequencies[heap->index] = 1;
+			heap->index++;
 
 		}
 		else { /*characters[j] == content[i]*/
@@ -257,6 +247,10 @@ void add_to_heap(binary_heap *heap, const char* content) {
 		}
 		i++;
 	}
+}
+
+void add_to_heap(binary_heap *heap) {
+	int i;
 
 	for (i = 0; i < heap->max_size; i++) {
 		if (heap->characters[i] > 0 && heap->frequencies[i] > 0) {
