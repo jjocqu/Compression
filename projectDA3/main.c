@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 
 		/*read and write test*/
 		char *string = read_JSON_from_file(argv[2], 0, 1000);
-		write_to_file(string, argv[3]);
+		write_string_to_file(string, argv[3]);
 
 		printf("reading and writing to file time: \n");
 		print_time();

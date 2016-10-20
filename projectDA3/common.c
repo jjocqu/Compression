@@ -38,7 +38,7 @@ char* read_JSON_from_file(const char* filename, long from, long number_of_bytes)
 	return result;
 }
 
-int write_to_file(const char* content, const char* filename) {
+int write_string_to_file(const char* content, const char* filename) {
 	FILE *fp = fopen(filename, "w");
 	int result;
 
@@ -56,4 +56,26 @@ int write_to_file(const char* content, const char* filename) {
 	else {
 		return 0;
 	}
+}
+
+void write_byte_to_file(FILE *fp, char byte) {
+	if (!fp) {
+		printf("error: file must be opened");
+	}
+
+	fputc(byte, fp);
+}
+
+char set_bit(char byte, int pos) {
+	byte |= 1 << pos;
+	return byte;
+}
+
+char clear_bit(char byte, int pos) {
+	byte &= ~(1 << pos);
+	return byte;
+}
+
+int test_bit(const char byte, int pos) {
+	return ((byte & (1 << pos)) != 0);
 }
