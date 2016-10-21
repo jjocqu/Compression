@@ -3,4 +3,6 @@
 
 void encode(char *input, char *output);
 
+void decode(char *input, char *output);
+
 #endif

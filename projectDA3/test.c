@@ -169,7 +169,7 @@ void char_code_test() {
 	assert(strcmp(get_code('7'), "1011") == 0);
 	assert(strcmp(get_code('8'), "0100") == 0);
 	assert(strcmp(get_code('9'), "1001") == 0);
-
+	assert(strcmp(get_code('A'), "") == 0);
 
 	destroy_binary_heap(heap);
 	free(string);
@@ -184,12 +184,14 @@ void run_tests() {
 	/*add all tests here*/
 	printf("running tests... \n");
 
-	huffmanheap_test();
+	/*huffmanheap_test();
 	build_heap_test();
 	build_tree_test();
 	char_code_test();
 	
-	encode_test();
+	encode_test();*/
+
+	decode("compressed", "data.txt");
 
 	printf("tests completed \n");
 }

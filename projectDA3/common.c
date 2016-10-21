@@ -62,7 +62,6 @@ void write_byte_to_file(FILE *fp, char byte) {
 	if (!fp) {
 		printf("error: file must be opened");
 	}
-
 	fputc(byte, fp);
 }
 

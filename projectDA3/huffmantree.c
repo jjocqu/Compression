@@ -165,8 +165,6 @@ node* remove_min(binary_heap *heap) {
 		first = heap->nodes[heap->size];
 		heap->nodes[heap->size] = NULL;
 
-		//print_heap(heap);
-
 		while (!balanced) {
 			/*check if balancing is necassary*/
 			if (!heap->nodes[pos_left]) { /*if there is no left child then there will be no right child*/
@@ -285,6 +283,7 @@ void build_char_code(node *node) {
 	if (node->character > 0) { /*external node*/
 		strcat(node->code, "\0");
 		strcpy(char_code[node->character], node->code);
+		printf("");
 	}
 	if (node->right) {
 		strcat(node->right->code, node->code);
@@ -295,4 +294,21 @@ void build_char_code(node *node) {
 
 char* get_code(char character) {
 	return char_code[character];
+}
+
+char get_char(node *n, char *code) {
+	int i = 0;
+
+	/*go to matching external node*/
+	while (code[i] != '\0') {
+		if (code[i] == '1') { /*go right*/
+			n = n->right;
+		}
+		else { /*code[i] == 0*/
+			n = n->left;
+		}
+		i++;
+	}
+	
+	return n->character;
 }

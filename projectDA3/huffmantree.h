@@ -50,6 +50,7 @@ node* build_tree(binary_heap *heap);
 void build_char_code(node *node);
 /*gets codes in list of char_code*/
 char* get_code(char character);
-
+/*get char from code*/
+char get_char(node *n, char *code);
 
 #endif
