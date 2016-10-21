@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt" />
+    <Text Include="reconstructed.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="compressed" />

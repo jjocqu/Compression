@@ -298,7 +298,7 @@ char* get_code(char character) {
 
 char get_char(node *n, char *code) {
 	int i = 0;
-
+	
 	/*go to matching external node*/
 	while (code[i] != '\0') {
 		if (code[i] == '1') { /*go right*/
@@ -307,6 +307,11 @@ char get_char(node *n, char *code) {
 		else { /*code[i] == 0*/
 			n = n->left;
 		}
+
+		if (!n) { /*if new node is NULL, code isn't long enough yet (or doesn't exist)*/
+			return NULL;
+		}
+
 		i++;
 	}
 	

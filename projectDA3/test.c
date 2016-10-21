@@ -187,11 +187,11 @@ void run_tests() {
 	/*huffmanheap_test();
 	build_heap_test();
 	build_tree_test();
-	char_code_test();
+	char_code_test();*/
 	
-	encode_test();*/
+	//encode_test();
 
-	decode("compressed", "data.txt");
+	decode("compressed", "reconstructed.txt");
 
 	printf("tests completed \n");
 }
