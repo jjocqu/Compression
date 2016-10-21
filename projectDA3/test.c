@@ -178,12 +178,6 @@ void char_code_test() {
 void encode_test() {
 	encode("data.txt", "compressed"); /*contains 0,12,34,567,890*/
 
-	char test = NULL;
-	test = set_bit(test, 0);
-	test = set_bit(test, 1);
-	test = set_bit(test, 2);
-	test = clear_bit(test, 1);
-	printf("");
 }
 
 void run_tests() {
