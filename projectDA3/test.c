@@ -189,7 +189,7 @@ void run_tests() {
 	build_tree_test();
 	char_code_test();*/
 	
-	//encode_test();
+	encode_test();
 
 	decode("compressed", "reconstructed.txt");
 
