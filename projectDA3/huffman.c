@@ -139,28 +139,11 @@ void decode(char *input, char *output) {
 			if (get_char(n, code)) {/*check if code is long enough*/
 				result = get_char(n, code);
 				write_byte_to_file(fpo, result);
-				printf("%c", result);
 				code_index = 0;
 			}
 		}
 		buffer = fgetc(fpi);
 	}
-
-	/*delete unwanted characters added by garbage zeros*/
-	/*code_index = 0;
-	for (i = 0; i < garbage_zeros; i++) {
-		code[code_index] = '0';
-		code_index++;
-		code[code_index] = '\0';
-		if (get_char(n, code)) {
-			garbage_chars++;
-			code_index = 0;
-		}
-	}
-	fseek(fpo, -2, SEEK_CUR);
-	write_byte_to_file(fpo, ']');
-	write_byte_to_file(fpo, '\0');
-	write_byte_to_file(fpo, '\0');*/
 
 	write_byte_to_file(fpo, ']');
 

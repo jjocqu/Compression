@@ -175,8 +175,21 @@ void char_code_test() {
 	free(string);
 }
 
-void encode_test() {
+void encode_decode_test() {
+	char char1;
+	char char2;
+
 	encode("data.txt", "compressed"); /*contains 0,12,34,567,890*/
+	decode("compressed", "reconstructed.txt");
+
+	FILE *fp1 = fopen("data.txt", "r");
+	FILE *fp2 = fopen("reconstructed.txt", "r");
+
+	while ((char1 = fgetc(fp1)) != EOF) { /*check if all characters match*/
+		char2 = fgetc(fp2);
+		assert(char1 == char2);
+	}
+
 
 }
 
@@ -184,14 +197,12 @@ void run_tests() {
 	/*add all tests here*/
 	printf("running tests... \n");
 
-	/*huffmanheap_test();
+	huffmanheap_test();
 	build_heap_test();
 	build_tree_test();
-	char_code_test();*/
+	char_code_test();
 	
-	encode_test();
-
-	decode("compressed", "reconstructed.txt");
+	encode_decode_test();
 
 	printf("tests completed \n");
 }
