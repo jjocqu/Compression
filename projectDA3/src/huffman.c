@@ -6,10 +6,14 @@
 #include <stdio.h>
 #include <string.h>
 
+/*static const long BYTES_PER_READ = 5; for testing only*/
+static const long BYTES_PER_READ = 1000;
+
 void encode(char *input, char *output) {
 	int i = 0;
+	int k = 0;
 	int counter = 0;
-	char buffer = NULL;
+	char buffer = '\0';
 
 	int garbage_zeros = 0;
 
@@ -17,9 +21,16 @@ void encode(char *input, char *output) {
 	binary_heap* heap;
 	node *n;
 
-	string = read_JSON_from_file(input, 0, 1000);
+	/*read 1000 bytes per time*/
 	heap = create_binary_heap(10);
+	string = read_bytes_from_file(input, BYTES_PER_READ*k, BYTES_PER_READ);
 	count_frequencies(heap, string);
+	while (string[BYTES_PER_READ] == '\0') {
+		k++;
+		free(string);
+		string = read_bytes_from_file(input, BYTES_PER_READ*k, BYTES_PER_READ);
+		count_frequencies(heap, string);
+	}
 	add_to_heap(heap);
 	n = build_tree(heap);
 	build_char_code(n);
@@ -37,16 +48,20 @@ void encode(char *input, char *output) {
 		fprintf(fp, "%lld ", heap->frequencies[i]);
 	}
 
+	free(string);
+
 	/*output codes to file*/
 	i = 0;
 	counter = 0;
+	k = 0;
+	string = read_bytes_from_file(input, BYTES_PER_READ*k, BYTES_PER_READ);
 	while (string[i] != '\0') {
 		int j = 0;
 		
 		while (get_code(string[i])[j] != '\0') {
 			if (counter == 8) {
 				write_byte_to_file(fp, buffer);
-				buffer = NULL;
+				buffer = '\0';
 				counter = 0;
 			}
 			if (get_code(string[i])[j] == '1') {
@@ -57,6 +72,13 @@ void encode(char *input, char *output) {
 			j++;
 		}
 		i++;
+		/*load next part if necessary*/
+		if (string[i] == '\0') {
+			k++;
+			free(string);
+			string = read_bytes_from_file(input, BYTES_PER_READ*k, BYTES_PER_READ);
+			i = 0;
+		}
 	}
 	/*output last byte (with added zero's) and output number of added zero's*/
 	write_byte_to_file(fp, buffer);
@@ -116,7 +138,6 @@ void decode(char *input, char *output) {
 	build_char_code(n);
 
 	/*read codes and reconstruct text*/
-	write_byte_to_file(fpo, '[');
 	buffer = fgetc(fpi);
 
 	while (buffer != EOF && buffer != last) {
@@ -144,8 +165,6 @@ void decode(char *input, char *output) {
 		}
 		buffer = fgetc(fpi);
 	}
-
-	write_byte_to_file(fpo, ']');
 
 	fclose(fpi);
 	fclose(fpo);

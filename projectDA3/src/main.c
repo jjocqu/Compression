@@ -1,18 +1,14 @@
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include <stdio.h>
 #include <string.h>
 #include "common.h"
 #include "timer.h"
 #include "test.h"
+#include "huffman.h"
 
 int main(int argc, char **argv) {
 
 	if (strcmp(argv[1], "-t") == 0) { /*run tests*/
 		run_tests();
-		_CrtDumpMemoryLeaks();
 		return 0;
 	}
 
@@ -26,17 +22,15 @@ int main(int argc, char **argv) {
 		printf("comprimeer %s tot %s \n", argv[2], argv[3]);
 
 		start_timer();
-
-		/*read and write test*/
-		char *string = read_JSON_from_file(argv[2], 0, 1000);
-		write_string_to_file(string, argv[3]);
-
-		printf("reading and writing to file time: \n");
+		encode(argv[2], argv[3]);
 		print_time();
 
 	}
 	else if (strcmp(argv[1], "-d") == 0) {
 		printf("decodeer %s tot %s \n", argv[2], argv[3]);
+		start_timer();
+		decode(argv[2], argv[3]);
+		print_time();
 	}
 
 	return 0;

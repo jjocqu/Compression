@@ -6,7 +6,7 @@
 /*returns input sequence with ',' as delimeter
 * don't read all the bytes at once
 */
-char* read_JSON_from_file(const char* filename, long from, long number_of_bytes);
+char* read_bytes_from_file(const char* filename, long from, long number_of_bytes);
 /*returns 0 if succeeded, 1 otherwise*/
 int write_string_to_file(const char* content, const char* filename);
 /*write byte per byte to file

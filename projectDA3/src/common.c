@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char* read_JSON_from_file(const char* filename, long from, long number_of_bytes) {
+char* read_bytes_from_file(const char* filename, long from, long number_of_bytes) {
 	char* result;
 	char temp;
 	int valid_chars = 0;
@@ -26,10 +26,8 @@ char* read_JSON_from_file(const char* filename, long from, long number_of_bytes)
 
 	temp = fgetc(fp);
 	while (temp != EOF && i < number_of_bytes) {
-		if (temp != '[' && temp != ']') { /*json chars that don't need to be stored*/
-			result[i] = temp;
-			i++;
-		}
+		result[i] = temp;
+		i++;
 		temp = fgetc(fp);
 	}
 	

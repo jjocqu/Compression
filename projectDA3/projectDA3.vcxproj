@@ -143,26 +143,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="common.c" />
-    <ClCompile Include="huffman.c" />
-    <ClCompile Include="huffmantree.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="test.c" />
-    <ClCompile Include="timer.c" />
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\huffman.h" />
+    <ClInclude Include="src\huffmantree.h" />
+    <ClInclude Include="src\test.h" />
+    <ClInclude Include="src\timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="huffman.h" />
-    <ClInclude Include="huffmantree.h" />
-    <ClInclude Include="test.h" />
-    <ClInclude Include="timer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="data.txt" />
-    <Text Include="reconstructed.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="compressed" />
+    <ClCompile Include="src\common.c" />
+    <ClCompile Include="src\huffman.c" />
+    <ClCompile Include="src\huffmantree.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\test.c" />
+    <ClCompile Include="src\timer.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
