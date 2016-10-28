@@ -9,6 +9,16 @@
 /*static const long BYTES_PER_READ = 5; for testing only*/
 static const long BYTES_PER_READ = 1000;
 
+void print_char_code() {
+	printf("printing code: \n");
+	for (int i = 0; i < 256; i++) {
+		if (char_code[i][0] != '\0') {
+			printf("char: %c -> code: %s \n",i, char_code[i]);
+		}
+	}
+	printf("\n");
+}
+
 void encode(char *input, char *output) {
 	int i = 0;
 	int k = 0;
@@ -34,18 +44,17 @@ void encode(char *input, char *output) {
 	add_to_heap(heap);
 	n = build_tree(heap);
 	build_char_code(n);
-
 	FILE *fp = fopen(output, "w");
 
 	/*output tree to file->output :
-	* number of chars char freq char freq...
+	* numberofchars charfreqEOFcharfreqEOF...
 	* char is 1 byte, freq is 
 	*/
-	fprintf(fp, "%d ", heap->index);
+	fputc(heap->index, fp);
 
 	for (i = 0; i < heap->index; i++) {
 		fputc(heap->characters[i], fp);
-		fprintf(fp, "%lld ", heap->frequencies[i]);
+		fprintf(fp, "%lld %c", heap->frequencies[i], EOF); /*delimiter needs to be char that can't be in tree*/
 	}
 
 	free(string);
@@ -101,8 +110,9 @@ void decode(char *input, char *output) {
 	long long temp_freq;
 	int index;
 	char buffer;
-	char code[256];
+	unsigned char code[256];
 	int code_index = 0;
+	int last_byte_read = 0; /*boolean value*/
 
 	int garbage_zeros;
 	char last;
@@ -127,26 +137,28 @@ void decode(char *input, char *output) {
 	/*read tree, rebuild heap and build tree*/
 	heap = create_binary_heap(10);
 
-	fscanf(fpi, "%d ", &index);
+	/*read tree size*/
+	index = fgetc(fpi);
 
 	for (i = 0; i < index; i++) {
+		char eof; /*read eof char*/
 		temp_char = fgetc(fpi);
-		fscanf(fpi, "%lld ", &temp_freq);
+		fscanf(fpi, "%lld %c", &temp_freq, &eof);
 		add_node(heap, create_node(temp_char, temp_freq));
 	}
 	n = build_tree(heap);
 	build_char_code(n);
-
 	/*read codes and reconstruct text*/
 	buffer = fgetc(fpi);
 
-	while (buffer != EOF && buffer != last) {
+	while (!last_byte_read) { 
 		int j = 0;
 		char result;
 		int offset = 0;
 
 		if (ftell(fpi) == (input_length - 2)) { /*second last byte: byte with garbage zeros!*/
 			offset = garbage_zeros; /*last 'offset' bits are garbage zeros*/
+			last_byte_read = 1;
 		}
 		for (j = 0; j < 8 - offset; j++) { /*check all bits in buffer*/
 			if (test_bit(buffer, j)) {

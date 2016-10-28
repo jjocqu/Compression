@@ -71,6 +71,11 @@ binary_heap* create_binary_heap(int size) {
 		printf("error: mem alloc failed");
 	}
 
+	/*empty char_code (only necessary if you run it a second time*/
+	for (i = 0; i < 256; i++) {
+		char_code[i][0] = '\0';
+	}
+
 	return heap;
 }
 
@@ -167,10 +172,10 @@ node* remove_min(binary_heap *heap) {
 
 		while (!balanced) {
 			/*check if balancing is necassary*/
-			if (!heap->nodes[pos_left]) { /*if there is no left child then there will be no right child*/
+			if (!(heap->nodes[pos_left]) || pos_left >= heap->max_size) { /*if there is no left child then there will be no right child*/
 				break;
 			}
-			else if (!heap->nodes[pos_right]) { /*only a left child*/
+			else if (!(heap->nodes[pos_right]) || pos_right >= heap->max_size) { /*only a left child*/
 				if (heap->nodes[pos_left]->frequency < heap->nodes[pos]->frequency) {
 					swap_nodes(heap, pos_left, pos);
 					pos = pos_left;

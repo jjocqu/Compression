@@ -10,7 +10,7 @@ typedef struct node {
 	struct node *left;
 	struct node *right;
 	long long frequency;
-	char code[256];
+	unsigned char code[256];
 } node;
 
 /*an array is used to store the binary heap
@@ -28,7 +28,7 @@ typedef struct binary_heap {
 } binary_heap;
 
 /*saves for each char corresponding code*/
-char char_code[256][256];
+unsigned char char_code[256][256];
 
 /*create and destroy functions*/
 node* create_node(char character, long long frequency);

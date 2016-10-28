@@ -184,7 +184,7 @@ void encode_decode_test() {
 
 	while ((char1 = fgetc(fp1)) != EOF) { /*check if all characters match*/
 		char2 = fgetc(fp2);
-		//assert(char1 == char2);
+		assert(char1 == char2);
 	}
 
 	fclose(fp1);
@@ -205,6 +205,12 @@ void run_tests() {
 	build_tree_test();
 	char_code_test();
 	
+	encode_decode_test(); 
+
+	fp = fopen("data.txt", "w");
+	fprintf(fp, "Hallo ik ben Jens Jocque en dit is een test.");
+	fclose(fp);
+
 	encode_decode_test();
 
 	printf("tests completed \n");
