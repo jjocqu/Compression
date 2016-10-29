@@ -270,7 +270,7 @@ node* build_tree(binary_heap *heap) {
 	while (heap->size != 1) { /*continue untill there is one node in heap*/
 		n1 = remove_min(heap);
 		n2 = remove_min(heap);
-		parent = create_node(NULL, n1->frequency + n2->frequency);
+		parent = create_node('\0', n1->frequency + n2->frequency);
 		parent->left = n1;
 		parent->right = n2;
 		add_node(heap, parent);	
