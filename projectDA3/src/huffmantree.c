@@ -288,7 +288,6 @@ void build_char_code(node *node) {
 	if (node->character > 0) { /*external node*/
 		strcat(node->code, "\0");
 		strcpy(char_code[node->character], node->code);
-		printf("");
 	}
 	if (node->right) {
 		strcat(node->right->code, node->code);
@@ -314,7 +313,7 @@ char get_char(node *n, char *code) {
 		}
 
 		if (!n) { /*if new node is NULL, code isn't long enough yet (or doesn't exist)*/
-			return NULL;
+			return '\0';
 		}
 
 		i++;
