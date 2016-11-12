@@ -91,10 +91,12 @@ void huffmanheap_test() {
 
 void build_heap_test() {
 	char *string;
+	char *string2;
 	binary_heap* heap;
 
-	string = read_bytes_from_file("data.txt", 0, 5); /*0,12,*/
-	char *string2 = read_bytes_from_file("data.txt", 5, 1000);/*34,567,890*/
+	FILE *fp = fopen("data.txt", "rb");
+	string = read_bytes_from_file(fp, 0, 5); /*0,12,*/
+	string2 = read_bytes_from_file(fp, 5, 1000);/*34,567,890*/
 	heap = create_binary_heap(10);
 	count_frequencies(heap, string); 
 	count_frequencies(heap, string2);
@@ -115,6 +117,7 @@ void build_heap_test() {
 	destroy_binary_heap(heap);
 	free(string);
 	free(string2);
+	fclose(fp);
 }
 
 void build_tree_test() {
@@ -122,7 +125,8 @@ void build_tree_test() {
 	binary_heap* heap;
 	node *n;
 
-	string = read_bytes_from_file("data.txt", 0, 1000); /*contains 0,12,34,567,890 */
+	FILE *fp = fopen("data.txt", "rb");
+	string = read_bytes_from_file(fp, 0, 1000); /*contains 0,12,34,567,890 */
 	heap = create_binary_heap(10);
 	count_frequencies(heap, string);
 	add_to_heap(heap);
@@ -141,6 +145,7 @@ void build_tree_test() {
 	
 	destroy_binary_heap(heap);
 	free(string);
+	fclose(fp);
 }
 
 void char_code_test() {
@@ -148,7 +153,8 @@ void char_code_test() {
 	binary_heap* heap;
 	node *n;
 
-	string = read_bytes_from_file("data.txt", 0, 1000); /*contains 0,12,34,567,890*/
+	FILE *fp = fopen("data.txt", "rb");
+	string = read_bytes_from_file(fp, 0, 1000); /*contains 0,12,34,567,890*/
 	heap = create_binary_heap(10);
 	count_frequencies(heap, string);
 	add_to_heap(heap);	
@@ -169,6 +175,7 @@ void char_code_test() {
 
 	destroy_binary_heap(heap);
 	free(string);
+	fclose(fp);
 }
 
 void encode_decode_test() {
@@ -208,7 +215,7 @@ void run_tests() {
 	encode_decode_test(); 
 
 	fp = fopen("data.txt", "w");
-	fprintf(fp, "Hallo ik ben Jens Jocque en dit is een test.");
+	fprintf(fp, "Hallo ik ben Jens Jocque en dit is een test. \n Hier nog wat cijfers 123, 6578, 456782");
 	fclose(fp);
 
 	encode_decode_test();

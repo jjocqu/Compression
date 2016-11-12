@@ -1,4 +1,4 @@
-#include "huffman.h"
+#include "encode_decode.h"
 #include "huffmantree.h"
 #include "common.h"
 
