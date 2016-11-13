@@ -28,7 +28,7 @@ void run_tests() {
 	/*add all tests here*/
 
 	FILE *fp = fopen("data.txt", "w");
-	fprintf(fp, "0,12,34,567,890");
+	fprintf(fp, "[0,12,34,567,890]");
 	fclose(fp);
 
 	printf("running tests... \n");

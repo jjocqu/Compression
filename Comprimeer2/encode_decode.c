@@ -6,9 +6,6 @@
 #include <stdio.h>
 #include <string.h>
 
-/*static const long BYTES_PER_READ = 5; for testing only*/
-static const long BYTES_PER_READ = 1000;
-
 void print_char_code() {
 	printf("printing code: \n");
 	for (int i = 0; i < 256; i++) {
@@ -21,37 +18,35 @@ void print_char_code() {
 
 void encode(char *input, char *output) {
 	int i = 0;
-	int k = 0;
 	int counter = 0;
-	long number_of_buffers = 0;
 	char buffer = '\0';
 
 	int garbage_zeros = 0;
+	char temp;
+	long long num;
+	char string[21]; //long enough to store long long as string + ',' + '\0'
 
-	char *string;
 	binary_heap* heap;
 	node *n;
 
 	FILE* fpi;
 	FILE* fpo;
 
-	/*first calculate number of buffers needed
-	* then read read BYTES_PER_READ bytes per time
-	*/
+	/*read [ and then keep reading a long long and a char (,) untill the char is ] */
 	fpi = fopen(input, "rb");
-	fseek(fpi, 0, SEEK_END);
-	number_of_buffers = (ftell(fpi) + BYTES_PER_READ - 1) / BYTES_PER_READ; /*integer division!*/
-	rewind(fpi);
-	heap = create_binary_heap(10);
-	for (i = 0; i < number_of_buffers; i++) {
-		string = read_bytes_from_file(fpi, BYTES_PER_READ*i, BYTES_PER_READ);
+	heap = create_binary_heap(12); /*11 chars: 0-9 and , */
+	fgetc(fpi); /*read [ */
+	fscanf(fpi, "%lld", &num);
+	sprintf(string, "%lld", num);
+	count_frequencies(heap, string);
+	while ((temp = fgetc(fpi)) != ']') {
+		fscanf(fpi, "%lld", &num);
+		sprintf(string, ",%lld", num);
 		count_frequencies(heap, string);
-		free(string);
 	}
 	add_to_heap(heap);
 	n = build_tree(heap);
 	build_char_code(n);
-
 	fpo = fopen(output, "wb");
 
 	/*output tree to file->output :
@@ -66,32 +61,33 @@ void encode(char *input, char *output) {
 	}
 
 	/*output codes to file*/
-	i = 0;
 	counter = 0;
-	k = 0;
-	string = read_bytes_from_file(fpi, BYTES_PER_READ*k, BYTES_PER_READ);
-	while (string[i] != '\0') {
-		int j = 0;
-		while (get_code(string[i])[j] != '\0') {
-			if (counter == sizeof(char)*8) {
-				fputc(buffer, fpo);
-				buffer = '\0';
-				counter = 0;
-			}
-			if (get_code(string[i])[j] == '1') {
-				buffer = set_bit(buffer, counter);
-			}
-			counter++;
-
-			j++;
+	rewind(fpi);
+	while ((temp = fgetc(fpi)) != ']') { /*loop over every number*/
+		i = 0;
+		fscanf(fpi, "%lld", &num);
+		if (temp == '[') { /*first num -> no ','*/
+			sprintf(string, "%lld", num);
 		}
-		i++;
-		/*load next part if necessary*/
-		if (string[i] == '\0') {
-			k++;
-			free(string);
-			string = read_bytes_from_file(fpi, BYTES_PER_READ*k, BYTES_PER_READ);
-			i = 0;
+		else {
+			sprintf(string, ",%lld", num);
+		}
+		while (string[i] != '\0') { /*loop over every char in string*/
+			int j = 0;
+			while (get_code(string[i])[j] != '\0') {
+				if (counter == sizeof(char) * 8) {
+					fputc(buffer, fpo);
+					buffer = '\0';
+					counter = 0;
+				}
+				if (get_code(string[i])[j] == '1') {
+					buffer = set_bit(buffer, counter);
+				}
+				counter++;
+
+				j++;
+			}
+			i++;
 		}
 	}
 	/*output last byte (with added zero's) and output number of added zero's*/
@@ -103,7 +99,6 @@ void encode(char *input, char *output) {
 	fclose(fpo);
 
 	destroy_binary_heap(heap);
-	free(string);
 }
 
 void decode(char *input, char *output) {
@@ -124,10 +119,13 @@ void decode(char *input, char *output) {
 	char last;
 	int garbage_chars = 0;
 
+	char string[21]; //long enough to store long long as string + ',' + '\0'
+	int string_pos = 0;
+
 	binary_heap *heap;
 	node *n;
 
-	if (!fpi) {
+	if (!fpi || !fpo) {
 		printf("error opening file");
 	}
 
@@ -141,7 +139,7 @@ void decode(char *input, char *output) {
 	rewind(fpi);
 
 	/*read tree, rebuild heap and build tree*/
-	heap = create_binary_heap(10);
+	heap = create_binary_heap(12);
 
 	/*read tree size*/
 	index = fgetc(fpi);
@@ -155,8 +153,8 @@ void decode(char *input, char *output) {
 	n = build_tree(heap);
 	build_char_code(n);
 	/*read codes and reconstruct text*/
+	fputc('[', fpo);
 	buffer = fgetc(fpi);
-
 	while (!last_byte_read) { 
 		unsigned int j = 0;
 		char result;
@@ -177,12 +175,26 @@ void decode(char *input, char *output) {
 			code[code_index] = '\0';
 			if (get_char(n, code)) {/*check if code is long enough*/
 				result = get_char(n, code);
-				fputc(result, fpo);
+				if (result == ',') { /*number is read*/
+					string[string_pos] = '\0'; 
+					fputs(string, fpo);
+					fputc(result, fpo);
+					string_pos = 0;
+				}
+				else {
+					string[string_pos] = result;
+					string_pos++;
+				}
+				
 				code_index = 0;
 			}
 		}
 		buffer = fgetc(fpi);
 	}
+	/*print last num*/
+	string[string_pos] = '\0'; 
+	fputs(string, fpo);
+	fputc(']', fpo);
 
 	fclose(fpi);
 	fclose(fpo);
