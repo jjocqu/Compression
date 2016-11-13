@@ -40,9 +40,11 @@ void encode(char *input, char *output) {
 	sprintf(string, "%lld", num);
 	count_frequencies(heap, string);
 	while ((temp = fgetc(fpi)) != ']') {
-		fscanf(fpi, "%lld", &num);
-		sprintf(string, ",%lld", num);
+		long long temp_num;
+		fscanf(fpi, "%lld", &temp_num);
+		sprintf(string, ",%lld", temp_num-num); /*encode difference between current num and previous*/
 		count_frequencies(heap, string);
+		num = temp_num;
 	}
 	add_to_heap(heap);
 	n = build_tree(heap);
@@ -61,16 +63,19 @@ void encode(char *input, char *output) {
 	}
 
 	/*output codes to file*/
+	num = 0;
 	counter = 0;
 	rewind(fpi);
 	while ((temp = fgetc(fpi)) != ']') { /*loop over every number*/
+		long long temp_num;
 		i = 0;
+		temp_num = num;
 		fscanf(fpi, "%lld", &num);
-		if (temp == '[') { /*first num -> no ','*/
+		if (temp == '[') { /*first num -> no ',' before num*/
 			sprintf(string, "%lld", num);
 		}
 		else {
-			sprintf(string, ",%lld", num);
+			sprintf(string, ",%lld", num-temp_num); /*encode difference*/
 		}
 		while (string[i] != '\0') { /*loop over every char in string*/
 			int j = 0;
@@ -114,7 +119,8 @@ void decode(char *input, char *output) {
 	unsigned char code[256];
 	int code_index = 0;
 	int last_byte_read = 0; /*boolean value*/
-
+	long long num = 0;
+	long long prev_num = 0;
 	int garbage_zeros;
 	char last;
 	int garbage_chars = 0;
@@ -177,9 +183,12 @@ void decode(char *input, char *output) {
 				result = get_char(n, code);
 				if (result == ',') { /*number is read*/
 					string[string_pos] = '\0'; 
+					num = atoll(string);
+					sprintf(string, "%lld", num + prev_num);
 					fputs(string, fpo);
 					fputc(result, fpo);
 					string_pos = 0;
+					prev_num += num;
 				}
 				else {
 					string[string_pos] = result;
@@ -192,7 +201,9 @@ void decode(char *input, char *output) {
 		buffer = fgetc(fpi);
 	}
 	/*print last num*/
-	string[string_pos] = '\0'; 
+	string[string_pos] = '\0';
+	num = atoll(string);
+	sprintf(string, "%lld", num + prev_num);
 	fputs(string, fpo);
 	fputc(']', fpo);
 
