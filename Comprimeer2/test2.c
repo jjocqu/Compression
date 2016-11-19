@@ -59,6 +59,96 @@ void check_equals(char* input, char* output) {
 	}
 }
 
+void question4() {
+	/*question 2.4: compression rate*/
+	FILE *fp;
+	fp = fopen("small_jumps_small.txt", "w");
+	generate_random_file(fp, 100000, 1);
+	fclose(fp);
+	fp = fopen("medium_jumps_small.txt", "w");
+	generate_random_file(fp, 100000, 2);
+	fclose(fp);
+	fp = fopen("big_jumps_small.txt", "w");
+	generate_random_file(fp, 100000, 3);
+	fclose(fp);
+	fp = fopen("small_jumps_medium.txt", "w");
+	generate_random_file(fp, 500000, 1);
+	fclose(fp);
+	fp = fopen("medium_jumps_medium.txt", "w");
+	generate_random_file(fp, 500000, 2);
+	fclose(fp);
+	fp = fopen("big_jumps_medium.txt", "w");
+	generate_random_file(fp, 500000, 3);
+	fclose(fp);
+	fp = fopen("small_jumps_big.txt", "w");
+	generate_random_file(fp, 1000000, 1);
+	fclose(fp);
+	fp = fopen("medium_jumps_big.txt", "w");
+	generate_random_file(fp, 1000000, 2);
+	fclose(fp);
+	fp = fopen("big_jumps_big.txt", "w");
+	generate_random_file(fp, 1000000, 3);
+	fclose(fp);
+
+	start_timer();
+	encode("small_jumps_small.txt", "small_jumps_small_encoded");
+	decode("small_jumps_small_encoded", "small_jumps_small_reconstructed");
+	printf("small_jumps_small encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("medium_jumps_small.txt", "medium_jumps_small_encoded");
+	decode("medium_jumps_small_encoded", "medium_jumps_small_reconstructed");
+	printf("medium_jumps_small encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("big_jumps_small.txt", "big_jumps_small_encoded");
+	decode("big_jumps_small_encoded", "big_jumps_small_reconstructed");
+	printf("big_jumps_small encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("small_jumps_medium.txt", "small_jumps_medium_encoded");
+	decode("small_jumps_medium_encoded", "small_jumps_medium_reconstructed");
+	printf("small_jumps_medium encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("medium_jumps_medium.txt", "medium_jumps_medium_encoded");
+	decode("medium_jumps_medium_encoded", "medium_jumps_medium_reconstructed");
+	printf("medium_jumps_medium encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("big_jumps_medium.txt", "big_jumps_medium_encoded");
+	decode("big_jumps_medium_encoded", "big_jumps_medium_reconstructed");
+	printf("big_jumps_medium encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("small_jumps_big.txt", "small_jumps_big_encoded");
+	decode("small_jumps_big_encoded", "small_jumps_big_reconstructed");
+	printf("small_jumps_big encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("medium_jumps_big.txt", "medium_jumps_big_encoded");
+	decode("medium_jumps_big_encoded", "medium_jumps_big_reconstructed");
+	printf("medium_jumps_big encoded and decoded \n");
+	print_time();
+	start_timer();
+	encode("big_jumps_big.txt", "big_jumps_big_encoded");
+	decode("big_jumps_big_encoded", "big_jumps_big_reconstructed");
+	printf("big_jumps_big encoded and decoded \n");
+	print_time();
+
+	printf("checking files... \n");
+	check_equals("small_jumps_small.txt", "small_jumps_small_reconstructed");
+	check_equals("medium_jumps_small.txt", "medium_jumps_small_reconstructed");
+	check_equals("big_jumps_small.txt", "big_jumps_small_reconstructed");
+	check_equals("small_jumps_medium.txt", "small_jumps_medium_reconstructed");
+	check_equals("medium_jumps_medium.txt", "medium_jumps_medium_reconstructed");
+	check_equals("big_jumps_medium.txt", "big_jumps_medium_reconstructed");
+	check_equals("small_jumps_big.txt", "small_jumps_big_reconstructed");
+	check_equals("medium_jumps_big.txt", "medium_jumps_big_reconstructed");
+	check_equals("big_jumps_big.txt", "big_jumps_big_reconstructed");
+	printf("all files correctly encoded and decoded \n");
+}
+
 void run_tests() {
 	/*add all tests here*/
 
@@ -72,36 +162,5 @@ void run_tests() {
 
 	printf("tests completed \n");
 
-	/*question 3: compression rate*/
-	fp = fopen("small_jumps.txt", "w");
-	generate_random_file(fp, 1000000, 1);
-	fclose(fp);
-	fp = fopen("medium_jumps.txt", "w");
-	generate_random_file(fp, 1000000, 2);
-	fclose(fp);
-	fp = fopen("big_jumps.txt", "w");
-	generate_random_file(fp, 1000000, 3);
-	fclose(fp);
-
-	start_timer();
-	encode("small_jumps.txt", "small_jumps_encoded");
-	decode("small_jumps_encoded", "small_jumps_reconstructed");
-	printf("small_jumps encoded and decoded \n");
-	print_time();
-	start_timer();
-	encode("medium_jumps.txt", "medium_jumps_encoded");
-	decode("medium_jumps_encoded", "medium_jumps_reconstructed");
-	printf("medium_jumps encoded and decoded \n");
-	print_time();
-	start_timer();
-	encode("big_jumps.txt", "big_jumps_encoded");
-	decode("big_jumps_encoded", "big_jumps_reconstructed");
-	printf("big_jumps encoded and decoded \n");
-	print_time();
-
-	printf("checking files... \n");
-	check_equals("small_jumps.txt", "small_jumps_reconstructed");
-	check_equals("medium_jumps.txt", "medium_jumps_reconstructed");
-	check_equals("big_jumps.txt", "big_jumps_reconstructed");
-	printf("all files correctly encoded and decoded \n");
+	question4();
 }
