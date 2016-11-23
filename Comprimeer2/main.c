@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include "common.h"
 #include "timer.h"
 #include "test.h"
 #include "encode_decode.h"
