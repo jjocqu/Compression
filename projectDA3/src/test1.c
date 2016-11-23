@@ -3,10 +3,12 @@
 #include <string.h>
 #include <assert.h>
 #include <math.h>
+#include <limits.h>
 
 #include "huffmantree.h"
 #include "huffman.h"
 #include "common.h"
+#include "timer.h"
 
 /*jump_size is 1, 2 or 3, with 1 smallest jumps to 3 biggest jumps*/
 void generate_random_file(FILE *fp, long long size, int jump_size) {

@@ -28,7 +28,7 @@ typedef struct binary_heap {
 } binary_heap;
 
 /*saves for each char corresponding code*/
-unsigned char char_code[256][256];
+char char_code[256][256];
 
 /*create and destroy functions*/
 node* create_node(char character, long long frequency);
