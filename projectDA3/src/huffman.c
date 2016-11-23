@@ -116,13 +116,12 @@ void decode(char *input, char *output) {
 	long long temp_freq;
 	int index;
 	char buffer;
-	unsigned char code[256];
+	char code[256];
 	int code_index = 0;
 	int last_byte_read = 0; /*boolean value*/
 
 	int garbage_zeros;
 	char last;
-	int garbage_chars = 0;
 
 	binary_heap *heap;
 	node *n;

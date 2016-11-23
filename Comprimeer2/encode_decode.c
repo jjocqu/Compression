@@ -116,14 +116,13 @@ void decode(char *input, char *output) {
 	long long temp_freq;
 	int index;
 	char buffer;
-	unsigned char code[256];
+	char code[256];
 	int code_index = 0;
 	int last_byte_read = 0; /*boolean value*/
 	long long num = 0;
 	long long prev_num = 0;
 	int garbage_zeros;
 	char last;
-	int garbage_chars = 0;
 
 	char string[21]; //long enough to store long long as string + ',' + '\0'
 	int string_pos = 0;

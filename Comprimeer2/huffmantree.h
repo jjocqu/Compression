@@ -10,7 +10,7 @@ typedef struct node {
 	struct node *left;
 	struct node *right;
 	long long frequency;
-	unsigned char code[256];
+	char code[256];
 } node;
 
 /*an array is used to store the binary heap
