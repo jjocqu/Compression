@@ -82,7 +82,7 @@ void question4() {
 	generate_random_file(fp, 500000, 3);
 	fclose(fp);
 	fp = fopen("small_jumps_big.txt", "w");
-	generate_random_file(fp, 1000000, 1);
+	generate_random_file(fp, 1000000, 1); 
 	fclose(fp);
 	fp = fopen("medium_jumps_big.txt", "w");
 	generate_random_file(fp, 1000000, 2);
